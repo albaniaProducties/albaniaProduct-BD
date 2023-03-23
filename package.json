@@ -1,0 +1,24 @@
+{
+  "name": "are-db",
+  "version": "0.0.9-beta",
+  "description": "Простая, легковестная база данных JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/albaniaProductGit/albania-products-db"
+  },
+  "keywords": [
+    "@albania/product",
+    "bd",
+    "db"
+  ],
+  "author": "albania",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/SkyShipGroup/DB/issues"
+  },
+  "homepage": "https://github.com/SkyShipGroup/DB#readme"
+}
