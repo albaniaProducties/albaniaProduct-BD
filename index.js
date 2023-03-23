@@ -10,16 +10,21 @@ class tb {
 
     this.data = [];
     this.load();
-
   }
 
-  add(data) {
-    this.data.push(data);
+  add(name, value) {
+    this.data.push({ [name]: value });
     this.save();
   }
 
-  getAll() {
-    return this.data;
+  get(name) {
+    let result = null;
+    this.data.forEach((item) => {
+      if (Object.keys(item).includes(name)) {
+        result = item[name];
+      }
+    });
+    return result;
   }
 
   save() {
@@ -27,7 +32,6 @@ class tb {
       fs.writeFileSync(this.filePath, JSON.stringify(this.data));
     } catch (err) {
       if (err.code === 'ENOENT') {
-        // создаем папку и файл, если их нет
         fs.mkdirSync(path.resolve(path.dirname(module.filename), this.directoryName), { recursive: true });
         fs.writeFileSync(this.filePath, JSON.stringify(this.data));
       } else {
@@ -44,7 +48,6 @@ class tb {
       }
     } catch (err) {
       if (err.code === 'ENOENT') {
-        // создаем папку и файл, если их нет
         fs.mkdirSync(path.resolve(path.dirname(module.filename), this.directoryName), { recursive: true });
         fs.writeFileSync(this.filePath, JSON.stringify(this.data));
       } else {
@@ -53,18 +56,62 @@ class tb {
     }
   }
 
-  remove(index) {
-    this.data.splice(index);
-    this.save();
+  delete(name) {
+    let index = -1;
+    this.data.forEach((item, i) => {
+      if (Object.keys(item).includes(name)) {
+        index = i;
+      }
+    });
+    if (index >= 0) {
+      this.data.splice(index, 1);
+      this.save();
+      return true;
+    }
+    return false;
   }
 
-  update(index, newData) {
-    this.data[index] = newData;
-    this.save();
+  updVal(name, value) {
+    let index = -1;
+    this.data.forEach((item, i) => {
+      if (Object.keys(item).includes(name)) {
+        index = i;
+      }
+    });
+    if (index >= 0) {
+      let newItem = { [name]: value };
+      this.data[index] = newItem;
+      this.save();
+      return true;
+    }
+    return false;
   }
 
-  has(data) {
-    return Object.values(this.data).includes(data);
+  updName(oldName, newName) {
+    let index = -1;
+    this.data.forEach((item, i) => {
+      if (Object.keys(item).includes(oldName)) {
+        index = i;
+      }
+    });
+    if (index >= 0) {
+      let value = this.data[index][oldName];
+      delete this.data[index][oldName];
+      this.data[index][newName] = value;
+      this.save();
+      return true;
+    }
+    return false;
+  }
+
+  hasIs(name) {
+    let found = false;
+    this.data.forEach((item) => {
+      if (Object.keys(item).includes(name)) {
+        found = true;
+      }
+    });
+    return found;
   }
 }
 
